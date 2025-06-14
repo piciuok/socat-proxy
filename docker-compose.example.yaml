@@ -1,0 +1,28 @@
+services:
+  socat-proxy:
+    image: piciuok/socat-proxy:latest
+    container_name: socat-proxy
+    restart: unless-stopped
+    environment:
+      # Host to proxy
+      TARGET_HOST: "1.2.3.4"
+      # TCP or UDP (both optional) ports to proxy
+      # <proxy_port>:<target_host_port> and next by comma
+      TCP_PORT_MAP: "1111:5678,2222:6789"
+      UDP_PORT_MAP: "1111:5678,2222:6789"
+      # <proxy_port>:<target_host_port> and next by comma
+    ports:
+      - "1111:1234/tcp"
+      - "1111:1234/udp"
+      - "2222:2345/tcp"
+      - "2222:2345/udp"
+    # Optional, useful if you need to proxy and access by local ip (in that example)
+    networks:
+      br0:
+        ipv4_address: 192.168.50.201
+
+# Optional network definition
+networks:
+  br0:
+    external: true
+    name: br0
